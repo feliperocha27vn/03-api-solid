@@ -1,5 +1,4 @@
-import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
-import { AuthenticateUseCase } from '@/use-cases/authenticate'
+import { makeAuthenticationUseCase } from '@/facotories/make-authenticantion-use-case'
 import { UserAlreadyExists } from '@/use-cases/errors/user-already-exists-error'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -15,9 +14,7 @@ export async function authenticate(
 
   const { email, password } = authenticateBodySchema.parse(request.body)
 
-  const prismaUsersRepository = new PrismaUsersRepository()
-
-  const authenticateUseCase = new AuthenticateUseCase(prismaUsersRepository)
+  const authenticateUseCase = makeAuthenticationUseCase()
 
   try {
     await authenticateUseCase.execute({
