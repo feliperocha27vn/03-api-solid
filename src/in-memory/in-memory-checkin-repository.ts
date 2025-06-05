@@ -6,6 +6,12 @@ import { randomUUID } from 'node:crypto'
 export class InMemoryCheckInsRepository implements CheckInsRepository {
   public items: CheckIn[] = []
 
+  async findManyUserId(userId: string, page: number) {
+    return this.items
+      .filter(item => userId === item.user_id)
+      .slice((page - 1) * 20, page * 20)
+  }
+
   async findByUserIdOnDate(userId: string, date: Date) {
     const startOfTheDay = dayjs(date).startOf('date')
     const endOfTheDay = dayjs(date).endOf('date')
