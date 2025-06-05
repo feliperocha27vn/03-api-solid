@@ -6,6 +6,10 @@ import { randomUUID } from 'node:crypto'
 export class InMemoryCheckInsRepository implements CheckInsRepository {
   public items: CheckIn[] = []
 
+  async countByUserId(userId: string) {
+    return this.items.filter(item => userId === item.user_id).length
+  }
+
   async findManyUserId(userId: string, page: number) {
     return this.items
       .filter(item => userId === item.user_id)
