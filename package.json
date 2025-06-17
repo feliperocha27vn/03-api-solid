@@ -9,8 +9,10 @@
     "start": "node build/server.js",
     "build": "tsup src --out-dir build",
     "lint": "eslint src --ext .ts --fix",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest run --project unit",
+    "test:e2e": "vitest run --project e2e",
+    "test:watch": "vitest --project unit",
+    "test:e2e:watch": "vitest --project e2e",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
   },
@@ -36,7 +38,7 @@
     "@vitest/ui": "3.1.3",
     "eslint": "8.57.1",
     "prisma": "6.3.1",
-    "tsx": "^4.19.2",
+    "tsx": "4.20.3",
     "typescript": "^5.7.3",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.1.3"
