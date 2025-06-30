@@ -1,5 +1,24 @@
-import { expect, test } from 'vitest'
+import { app } from '@/app'
+import request from 'supertest'
+import { expect, describe, it, beforeAll, afterAll } from 'vitest'
 
-test('testing', () => {
-  expect(1 + 1).toEqual(2)
+beforeAll(async () => {
+  await app.ready()
+})
+
+
+afterAll(async () => {
+  await app.close()
+})
+
+describe('Register e2e', () => {
+  it('should be able to register', async () => {
+    const response = await request(app.server).post('/users').send({
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '123456',
+    })
+    
+    expect(response.status).toEqual(201)
+  })
 })
