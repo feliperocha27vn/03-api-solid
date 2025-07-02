@@ -1,6 +1,4 @@
 import { makeCreateGymUseCase } from '@/facotories/make-create-gym-use-case'
-import { makeRegisterUseCase } from '@/facotories/make-register-use-case'
-import { UserAlreadyExists } from '@/use-cases/errors/user-already-exists-error'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
