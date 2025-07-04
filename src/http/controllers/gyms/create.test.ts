@@ -12,19 +12,20 @@ afterAll(async () => {
 })
 
 describe('Register e2e', () => {
-  it('should be able to login', async () => {
+  it('should be able create a gym', async () => {
     const { token } = await createAndAuthenticationUser(app)
 
-    const profileResponse = await request(app.server)
-      .get('/me')
+    const response = await request(app.server)
+      .post('/gyms')
       .set('Authorization', `Bearer ${token}`)
-      .send()
-
-    expect(profileResponse.status).toEqual(200)
-    expect(profileResponse.body.user).toEqual(
-      expect.objectContaining({
-        email: 'johndoe@example.com',
+      .send({
+        title: 'Gym',
+        phone: null,
+        description: null,
+        latitude: -21.0675528,
+        longitude: -50.1438201,
       })
-    )
+
+    expect(response.status).toEqual(201)
   })
 })

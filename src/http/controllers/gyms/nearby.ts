@@ -1,14 +1,13 @@
-import { makeCreateGymUseCase } from '@/facotories/make-create-gym-use-case'
 import { makeFetchNearbyGymsUseCase } from '@/facotories/make-fetch-nearby-gyms-use-case'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
 export async function nearby(request: FastifyRequest, reply: FastifyReply) {
   const nearbyGymsQuerySchema = z.object({
-    latitude: z.number().refine(value => {
+    latitude: z.coerce.number().refine(value => {
       return Math.abs(value) <= 90
     }),
-    longitude: z.number().refine(value => {
+    longitude: z.coerce.number().refine(value => {
       return Math.abs(value) <= 180
     }),
   })
