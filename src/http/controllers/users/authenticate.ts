@@ -23,7 +23,9 @@ export async function authenticate(
     })
 
     const token = await reply.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sign: {
           sub: user.id,
@@ -32,11 +34,13 @@ export async function authenticate(
     )
 
     const refreshToken = await reply.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sign: {
           sub: user.id,
-          expiresIn: '7d'
+          expiresIn: '7d',
         },
       }
     )
@@ -44,11 +48,12 @@ export async function authenticate(
     return reply
       .status(200)
       .setCookie('refreshToken', refreshToken, {
-      path: '/',
-      secure: true,
-      httpOnly: true,
-      sameSite: true
-    }).send({ token })
+        path: '/',
+        secure: true,
+        httpOnly: true,
+        sameSite: true,
+      })
+      .send({ token })
   } catch (err) {
     if (err instanceof UserAlreadyExists) {
       return reply.status(409).send({ message: err.message })

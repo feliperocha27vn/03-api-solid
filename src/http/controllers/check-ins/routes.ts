@@ -4,12 +4,17 @@ import { create } from './create'
 import { validate } from './validate'
 import { history } from './history'
 import { metrics } from './metrics'
+import { verifyUserRole } from '@/middlewares/verifiy-user-role'
 
 export async function checkInsRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJwt)
 
   app.post('/gyms/:gymId/check-ins', create)
-  app.patch('/check-ins/:checkInId/validate', validate)
+  app.patch(
+    '/check-ins/:checkInId/validate',
+    { onRequest: [verifyUserRole('MEMBER')] },
+    validate
+  )
   app.get('/check-in/history', history)
   app.get('/check-ins/metrics', metrics)
 }
