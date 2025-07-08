@@ -1,0 +1,28 @@
+name: Run Unit Tests
+
+# quando meus comandos serão executados
+# nesse cado a cada push
+on: [push]
+
+# o que eu quero que seja executado
+jobs:
+    run-unit-tests:
+        name: Run Unit Tests
+        # onde vai rodar, em qual máquina
+        runs-on: ubuntu-latest
+
+        # o que meu job vai executar
+        steps:
+            # responsável por baixar o 
+            # código dentro da nossa mv
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 18
+                cache: 'npm'
+
+            - run: npm ci
+
+            - run: npm run test
+
+
