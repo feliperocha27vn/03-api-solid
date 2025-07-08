@@ -1,0 +1,39 @@
+name: Run e2e Tests
+
+# quando meus comandos serão executados
+# nesse cado a cada push
+on: [pull_request]
+
+# o que eu quero que seja executado
+jobs:
+    run-e2e-tests:
+        name: Run e2e Tests
+        # onde vai rodar, em qual máquina
+        runs-on: ubuntu-latest
+
+        services:
+          postgres:
+            image: bitnami/postgresql
+            ports:
+              - 5432:5432
+            env:
+              POSTGRESQL_USERNAME: docker
+              POSTGRESQL_PASSWORD: docker
+              POSTGRESQL_DATABASE: apisolid
+
+        # o que meu job vai executar
+        steps:
+            # responsável por baixar o 
+            # código dentro da nossa mv
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 18
+                cache: 'npm'
+
+            - run: npm ci
+
+            - run: npm run test:e2e
+              env:
+                JWT_SECRET: testing
+                DATABASE_URL: "postgresql://docker:docker@localhost:5432/apisolid?schema=public"
